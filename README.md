@@ -72,7 +72,6 @@ Nella realizzazione di questo progetto e' stato utilizzato **Claude
 
 - discussione e definizione dell'architettura del progetto e della suddivisione
   in package;
-- generazione di codice, successivamente letto, verificato e adattato;
 - supporto nella diagnosi di problemi di configurazione dell'ambiente di
   sviluppo (build Gradle, dipendenze, esecuzione);
 - stesura della documentazione.
