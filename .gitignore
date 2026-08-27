@@ -1,0 +1,21 @@
+# Output di build
+build/
+bin/
+out/
+
+# Cache locale di Gradle (il wrapper NON va ignorato: serve per ./gradlew)
+.gradle/
+
+# IDE
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+.settings/
+.classpath
+.project
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
