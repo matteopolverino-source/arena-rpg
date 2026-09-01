@@ -30,6 +30,16 @@ public class HealAbility extends AbstractAbility {
 
     /**
      * {@inheritDoc}
+     *
+     * @return sempre {@link TargetType#SELF}: una cura ristora chi la lancia
+     */
+    @Override
+    public TargetType getTargetType() {
+        return TargetType.SELF;
+    }
+
+    /**
+     * {@inheritDoc}
      * <p>
      * Il valore restituito e' la differenza fra i punti vita del bersaglio
      * dopo e prima della cura: se il bersaglio era quasi sano, l'abilita'

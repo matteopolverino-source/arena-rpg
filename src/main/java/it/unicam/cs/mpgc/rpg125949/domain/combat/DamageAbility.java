@@ -32,6 +32,17 @@ public class DamageAbility extends AbstractAbility {
 
     /**
      * {@inheritDoc}
+     *
+     * @return sempre {@link TargetType#OPPONENT}: un attacco colpisce
+     *         l'avversario
+     */
+    @Override
+    public TargetType getTargetType() {
+        return TargetType.OPPONENT;
+    }
+
+    /**
+     * {@inheritDoc}
      * <p>
      * Il valore restituito e' la differenza fra i punti vita del bersaglio
      * prima e dopo il colpo: se il bersaglio aveva meno punti vita del danno

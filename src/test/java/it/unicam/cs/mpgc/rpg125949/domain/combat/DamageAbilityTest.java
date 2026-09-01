@@ -34,6 +34,13 @@ class DamageAbilityTest {
     }
 
     @Test
+    void declaresThatItTargetsTheOpponent() {
+        Ability ability = new DamageAbility("Fendente igneo", Element.FIRE, 40, calculator);
+
+        assertEquals(TargetType.OPPONENT, ability.getTargetType());
+    }
+
+    @Test
     void reducesTheHealthOfTheTarget() {
         Ability ability = new DamageAbility("Fendente igneo", Element.FIRE, 40, calculator);
 

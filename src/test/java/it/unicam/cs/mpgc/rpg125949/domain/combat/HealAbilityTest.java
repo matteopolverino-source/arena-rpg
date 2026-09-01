@@ -63,6 +63,13 @@ class HealAbilityTest {
     }
 
     @Test
+    void declaresThatItTargetsWhoeverUsesIt() {
+        Ability ability = new HealAbility("Rugiada", Element.WATER, 30);
+
+        assertEquals(TargetType.SELF, ability.getTargetType());
+    }
+
+    @Test
     void rejectsAnInvalidConstruction() {
         assertAll(
                 () -> assertThrows(NullPointerException.class,

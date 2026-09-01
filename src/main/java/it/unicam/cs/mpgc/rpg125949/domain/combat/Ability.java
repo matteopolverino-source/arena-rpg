@@ -26,6 +26,11 @@ public interface Ability {
     Element getElement();
 
     /**
+     * @return su chi va applicata questa abilita'
+     */
+    TargetType getTargetType();
+
+    /**
      * Esegue l'abilita'.
      *
      * @param user   combattente che usa l'abilita'
