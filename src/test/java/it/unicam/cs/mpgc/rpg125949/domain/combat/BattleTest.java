@@ -104,6 +104,45 @@ class BattleTest {
         );
     }
 
+    /**
+     * Con squadre di piu' membri la battaglia non deve fermarsi alla caduta
+     * del primo: il compagno successivo scende in campo e si continua.
+     */
+    @Test
+    void sendsInTheNextCompanionAfterTheActiveFighterFalls() {
+        Fighter hero = fighter("Eroe", 500, 200, 10, 99);
+        Fighter firstEnemy = fighter("Guardia", 5, 10, 1, 1);
+        Fighter secondEnemy = fighter("Capitano", 200, 10, 1, 1);
+        Team enemies = new Team(List.of(firstEnemy, secondEnemy));
+        Battle battle = new Battle(new Team(List.of(hero)), enemies, turnOrder);
+
+        battle.executeRound(attack(100), attack(10));
+
+        assertAll(
+                () -> assertTrue(firstEnemy.isDefeated()),
+                () -> assertSame(secondEnemy, enemies.getActiveFighter()),
+                () -> assertFalse(battle.isOver(), "resta un nemico in piedi")
+        );
+    }
+
+    @Test
+    void theSecondCompanionCanThenFightTheFollowingRound() {
+        Fighter hero = fighter("Eroe", 500, 200, 10, 99);
+        Fighter firstEnemy = fighter("Guardia", 5, 10, 1, 1);
+        Fighter secondEnemy = fighter("Capitano", 200, 60, 50, 1);
+        Team enemies = new Team(List.of(firstEnemy, secondEnemy));
+        Battle battle = new Battle(new Team(List.of(hero)), enemies, turnOrder);
+        battle.executeRound(attack(100), attack(10));
+
+        List<TurnResult> second = battle.executeRound(attack(10), attack(60));
+
+        assertAll(
+                () -> assertEquals(2, second.size()),
+                () -> assertSame(secondEnemy, second.get(1).actor()),
+                () -> assertTrue(hero.getCurrentHp() < 500, "il capitano doveva colpire l'eroe")
+        );
+    }
+
     @Test
     void isNotOverWhileBothTeamsHaveFightersStanding() {
         Battle battle = battleOf(fighter("Eroe", 100, 10, 50, 50), fighter("Nemico", 100, 10, 50, 50));

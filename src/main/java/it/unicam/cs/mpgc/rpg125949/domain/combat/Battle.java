@@ -20,7 +20,9 @@ import java.util.Optional;
  * <p>
  * Un turno si svolge cosi': entrambi gli schieramenti dichiarano l'abilita'
  * che intendono usare, l'ordine di azione viene calcolato, e chi risulta
- * sconfitto prima del proprio turno non agisce.
+ * sconfitto prima del proprio turno non agisce. Al termine del turno le
+ * squadre che hanno perso il combattente in campo ne schierano un altro, se
+ * ne hanno ancora a disposizione.
  */
 public class Battle {
 
@@ -112,6 +114,12 @@ public class Battle {
 
             report.add(new TurnResult(actor, ability, target, ability.applyTo(actor, target)));
         }
+
+        // A turno concluso ogni squadra manda in campo un sostituto per chi e'
+        // caduto, cosi' che lo scontro possa proseguire finche' resta qualcuno
+        // in grado di combattere. Decidere chi schierare spetta alla squadra.
+        playerTeam.replaceDefeatedActiveFighter();
+        enemyTeam.replaceDefeatedActiveFighter();
 
         roundNumber++;
         return List.copyOf(report);
