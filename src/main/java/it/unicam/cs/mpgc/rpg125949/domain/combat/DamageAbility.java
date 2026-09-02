@@ -44,6 +44,18 @@ public class DamageAbility extends AbstractAbility {
     /**
      * {@inheritDoc}
      * <p>
+     * Interroga il {@link DamageCalculator} senza applicare il risultato.
+     */
+    @Override
+    public int estimateEffect(Fighter user, Fighter target) {
+        Objects.requireNonNull(user, "user non puo' essere null");
+        Objects.requireNonNull(target, "target non puo' essere null");
+        return calculator.computeDamage(user, target, power, getElement());
+    }
+
+    /**
+     * {@inheritDoc}
+     * <p>
      * Il valore restituito e' la differenza fra i punti vita del bersaglio
      * prima e dopo il colpo: se il bersaglio aveva meno punti vita del danno
      * calcolato, l'abilita' riporta solo quelli effettivamente tolti.
@@ -54,7 +66,7 @@ public class DamageAbility extends AbstractAbility {
         Objects.requireNonNull(target, "target non puo' essere null");
 
         int healthBefore = target.getCurrentHp();
-        target.takeDamage(calculator.computeDamage(user, target, power, getElement()));
+        target.takeDamage(estimateEffect(user, target));
         return healthBefore - target.getCurrentHp();
     }
 }

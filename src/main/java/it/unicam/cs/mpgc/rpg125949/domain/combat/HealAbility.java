@@ -41,6 +41,19 @@ public class HealAbility extends AbstractAbility {
     /**
      * {@inheritDoc}
      * <p>
+     * Corrisponde ai punti vita che l'abilita' e' in grado di ripristinare,
+     * a prescindere da quanti ne manchino davvero al bersaglio.
+     */
+    @Override
+    public int estimateEffect(Fighter user, Fighter target) {
+        Objects.requireNonNull(user, "user non puo' essere null");
+        Objects.requireNonNull(target, "target non puo' essere null");
+        return amount;
+    }
+
+    /**
+     * {@inheritDoc}
+     * <p>
      * Il valore restituito e' la differenza fra i punti vita del bersaglio
      * dopo e prima della cura: se il bersaglio era quasi sano, l'abilita'
      * riporta solo i punti effettivamente ripristinati.
@@ -51,7 +64,7 @@ public class HealAbility extends AbstractAbility {
         Objects.requireNonNull(target, "target non puo' essere null");
 
         int healthBefore = target.getCurrentHp();
-        target.heal(amount);
+        target.heal(estimateEffect(user, target));
         return target.getCurrentHp() - healthBefore;
     }
 }

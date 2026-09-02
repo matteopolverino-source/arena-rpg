@@ -82,6 +82,23 @@ class DamageAbilityTest {
         );
     }
 
+    /**
+     * La stima serve alla IA per confrontare le opzioni prima di scegliere:
+     * non deve produrre alcun effetto sul bersaglio.
+     */
+    @Test
+    void estimatesTheDamageWithoutInflictingIt() {
+        Ability ability = new DamageAbility("Fendente igneo", Element.FIRE, 40, calculator);
+        int expected = calculator.computeDamage(user, target, 40, Element.FIRE);
+
+        int estimate = ability.estimateEffect(user, target);
+
+        assertAll(
+                () -> assertEquals(expected, estimate),
+                () -> assertEquals(100, target.getCurrentHp(), "la stima non deve infliggere danno")
+        );
+    }
+
     @Test
     void rejectsAnInvalidConstruction() {
         assertAll(

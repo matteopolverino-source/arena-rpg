@@ -31,6 +31,25 @@ public interface Ability {
     TargetType getTargetType();
 
     /**
+     * Stima l'effetto che l'abilita' produrrebbe, senza produrlo.
+     * <p>
+     * Permette a un'intelligenza artificiale di confrontare fra loro le
+     * abilita' disponibili senza doverne conoscere il tipo concreto: senza
+     * questo metodo l'unica alternativa sarebbe ispezionare la classe delle
+     * abilita' una per una, vanificando la loro sostituibilita'.
+     * <p>
+     * Il valore e' teorico: non tiene conto dei punti vita residui del
+     * bersaglio, cosi' che due abilita' molto potenti restino distinguibili
+     * anche contro un avversario ormai allo stremo.
+     *
+     * @param user   combattente che userebbe l'abilita'
+     * @param target combattente su cui verrebbe usata
+     * @return l'entita' prevista dell'effetto
+     * @throws NullPointerException se uno dei due combattenti e' nullo
+     */
+    int estimateEffect(Fighter user, Fighter target);
+
+    /**
      * Esegue l'abilita'.
      *
      * @param user   combattente che usa l'abilita'

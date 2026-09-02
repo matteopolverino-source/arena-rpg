@@ -70,6 +70,19 @@ class HealAbilityTest {
     }
 
     @Test
+    void estimatesTheHealingWithoutApplyingIt() {
+        target.takeDamage(50);
+        Ability ability = new HealAbility("Rugiada", Element.WATER, 30);
+
+        int estimate = ability.estimateEffect(user, target);
+
+        assertAll(
+                () -> assertEquals(30, estimate),
+                () -> assertEquals(50, target.getCurrentHp(), "la stima non deve curare")
+        );
+    }
+
+    @Test
     void rejectsAnInvalidConstruction() {
         assertAll(
                 () -> assertThrows(NullPointerException.class,
