@@ -2,6 +2,7 @@ package it.unicam.cs.mpgc.rpg125949.domain.character;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * Squadra di combattenti schierata in battaglia.
@@ -87,6 +88,29 @@ public class Team {
                     fighter.getName() + " e' stato sconfitto e non puo' scendere in campo");
         }
         this.activeFighter = fighter;
+    }
+
+    /**
+     * Manda in campo un sostituto se il combattente schierato e' caduto.
+     * <p>
+     * E' la squadra a occuparsene, non il motore di battaglia: sapere chi puo'
+     * ancora combattere fa parte della gestione del proprio schieramento.
+     * Se il combattente in campo e' ancora in piedi non cambia nulla.
+     *
+     * @return il combattente ora schierato, oppure vuoto se nessun membro
+     *         della squadra e' in grado di combattere
+     */
+    public Optional<Fighter> replaceDefeatedActiveFighter() {
+        if (!activeFighter.isDefeated()) {
+            return Optional.of(activeFighter);
+        }
+        for (Fighter candidate : fighters) {
+            if (!candidate.isDefeated()) {
+                this.activeFighter = candidate;
+                return Optional.of(candidate);
+            }
+        }
+        return Optional.empty();
     }
 
     /**

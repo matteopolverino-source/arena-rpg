@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -73,6 +74,53 @@ class TeamTest {
         mira.takeDamage(100);
 
         assertTrue(team.isDefeated());
+    }
+
+    @Test
+    void sendsInTheNextFighterWhenTheActiveOneFalls() {
+        kael.takeDamage(100);
+
+        Optional<Fighter> inTheField = team.replaceDefeatedActiveFighter();
+
+        assertAll(
+                () -> assertTrue(inTheField.isPresent()),
+                () -> assertSame(mira, inTheField.orElseThrow()),
+                () -> assertSame(mira, team.getActiveFighter())
+        );
+    }
+
+    @Test
+    void leavesTheActiveFighterInPlaceWhileItStillStands() {
+        Optional<Fighter> inTheField = team.replaceDefeatedActiveFighter();
+
+        assertAll(
+                () -> assertSame(kael, inTheField.orElseThrow()),
+                () -> assertSame(kael, team.getActiveFighter())
+        );
+    }
+
+    @Test
+    void hasNobodyLeftToSendInWhenEveryFighterIsDefeated() {
+        kael.takeDamage(100);
+        mira.takeDamage(100);
+
+        assertTrue(team.replaceDefeatedActiveFighter().isEmpty());
+    }
+
+    /**
+     * La sostituzione deve saltare i compagni gia' caduti, non fermarsi al
+     * primo della lista.
+     */
+    @Test
+    void skipsCompanionsThatHaveAlreadyFallen() {
+        Fighter toren = new Fighter("Toren", Element.NATURE, STATS);
+        Team trio = new Team(List.of(kael, mira, toren));
+        kael.takeDamage(100);
+        mira.takeDamage(100);
+
+        Optional<Fighter> inTheField = trio.replaceDefeatedActiveFighter();
+
+        assertSame(toren, inTheField.orElseThrow());
     }
 
     @Test
