@@ -14,10 +14,16 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import it.unicam.cs.mpgc.rpg125949.domain.combat.Ability;
+import it.unicam.cs.mpgc.rpg125949.domain.combat.HealAbility;
 
 class TeamTest {
 
     private static final Stats STATS = new Stats(100, 20, 15, 30);
+
+    /** Repertorio minimo: un combattente deve conoscere almeno un'abilita'. */
+    private static final List<Ability> ABILITIES =
+            List.of(new HealAbility("Riposo", Element.NEUTRAL, 1));
 
     private Fighter kael;
     private Fighter mira;
@@ -25,8 +31,8 @@ class TeamTest {
 
     @BeforeEach
     void setUp() {
-        kael = new Fighter("Kael", Element.FIRE, STATS);
-        mira = new Fighter("Mira", Element.WATER, STATS);
+        kael = new Fighter("Kael", Element.FIRE, STATS, ABILITIES);
+        mira = new Fighter("Mira", Element.WATER, STATS, ABILITIES);
         team = new Team(List.of(kael, mira));
     }
 
@@ -56,7 +62,7 @@ class TeamTest {
 
     @Test
     void refusesToSwitchToAFighterThatDoesNotBelongToTheTeam() {
-        Fighter stranger = new Fighter("Toren", Element.NATURE, STATS);
+        Fighter stranger = new Fighter("Toren", Element.NATURE, STATS, ABILITIES);
 
         assertThrows(IllegalArgumentException.class, () -> team.switchTo(stranger));
     }
@@ -113,7 +119,7 @@ class TeamTest {
      */
     @Test
     void skipsCompanionsThatHaveAlreadyFallen() {
-        Fighter toren = new Fighter("Toren", Element.NATURE, STATS);
+        Fighter toren = new Fighter("Toren", Element.NATURE, STATS, ABILITIES);
         Team trio = new Team(List.of(kael, mira, toren));
         kael.takeDamage(100);
         mira.takeDamage(100);
@@ -132,7 +138,7 @@ class TeamTest {
     void rejectsMoreFightersThanAllowed() {
         List<Fighter> tooMany = new ArrayList<>();
         for (int i = 0; i <= Team.MAX_SIZE; i++) {
-            tooMany.add(new Fighter("Combattente " + i, Element.NEUTRAL, STATS));
+            tooMany.add(new Fighter("Combattente " + i, Element.NEUTRAL, STATS, ABILITIES));
         }
 
         assertThrows(IllegalArgumentException.class, () -> new Team(tooMany));

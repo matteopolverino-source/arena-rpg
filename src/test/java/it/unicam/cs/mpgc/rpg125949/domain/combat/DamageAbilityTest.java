@@ -9,8 +9,13 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import java.util.List;
 
 class DamageAbilityTest {
+
+    /** Repertorio minimo: un combattente deve conoscere almeno un'abilita'. */
+    private static final List<Ability> ABILITIES =
+            List.of(new HealAbility("Riposo", Element.NEUTRAL, 1));
 
     private DamageCalculator calculator;
     private Fighter user;
@@ -19,8 +24,8 @@ class DamageAbilityTest {
     @BeforeEach
     void setUp() {
         calculator = new StandardDamageCalculator(new StandardEffectivenessChart());
-        user = new Fighter("Kael", Element.FIRE, new Stats(100, 40, 10, 30));
-        target = new Fighter("Sela", Element.NATURE, new Stats(100, 20, 20, 20));
+        user = new Fighter("Kael", Element.FIRE, new Stats(100, 40, 10, 30), ABILITIES);
+        target = new Fighter("Sela", Element.NATURE, new Stats(100, 20, 20, 20), ABILITIES);
     }
 
     @Test
@@ -69,7 +74,7 @@ class DamageAbilityTest {
      */
     @Test
     void reportsOnlyTheDamageActuallyInflicted() {
-        Fighter almostDead = new Fighter("Toren", Element.NEUTRAL, new Stats(100, 10, 1, 10));
+        Fighter almostDead = new Fighter("Toren", Element.NEUTRAL, new Stats(100, 10, 1, 10), ABILITIES);
         almostDead.takeDamage(97);
         Ability ability = new DamageAbility("Colpo devastante", Element.NEUTRAL, 200, calculator);
 

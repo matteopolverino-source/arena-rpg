@@ -15,6 +15,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class SpeedTurnOrderTest {
 
+    /** Repertorio minimo: un combattente deve conoscere almeno un'abilita'. */
+    private static final List<Ability> ABILITIES =
+            List.of(new HealAbility("Riposo", Element.NEUTRAL, 1));
+
     private TurnOrder turnOrder;
 
     @BeforeEach
@@ -23,7 +27,7 @@ class SpeedTurnOrderTest {
     }
 
     private static Fighter withSpeed(String name, int speed) {
-        return new Fighter(name, Element.NEUTRAL, new Stats(100, 20, 20, speed));
+        return new Fighter(name, Element.NEUTRAL, new Stats(100, 20, 20, speed), ABILITIES);
     }
 
     @Test

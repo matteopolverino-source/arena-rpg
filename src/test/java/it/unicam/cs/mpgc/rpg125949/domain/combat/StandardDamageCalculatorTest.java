@@ -9,8 +9,13 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import java.util.List;
 
 class StandardDamageCalculatorTest {
+
+    /** Repertorio minimo: un combattente deve conoscere almeno un'abilita'. */
+    private static final List<Ability> ABILITIES =
+            List.of(new HealAbility("Riposo", Element.NEUTRAL, 1));
 
     private DamageCalculator calculator;
 
@@ -20,7 +25,7 @@ class StandardDamageCalculatorTest {
     }
 
     private static Fighter fighter(Element element, int attack, int defense) {
-        return new Fighter("Prova", element, new Stats(100, attack, defense, 10));
+        return new Fighter("Prova", element, new Stats(100, attack, defense, 10), ABILITIES);
     }
 
     @Test

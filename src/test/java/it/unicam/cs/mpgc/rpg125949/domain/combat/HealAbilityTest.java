@@ -8,16 +8,21 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import java.util.List;
 
 class HealAbilityTest {
+
+    /** Repertorio minimo: un combattente deve conoscere almeno un'abilita'. */
+    private static final List<Ability> ABILITIES =
+            List.of(new HealAbility("Riposo", Element.NEUTRAL, 1));
 
     private Fighter user;
     private Fighter target;
 
     @BeforeEach
     void setUp() {
-        user = new Fighter("Mira", Element.WATER, new Stats(100, 20, 20, 20));
-        target = new Fighter("Toren", Element.NEUTRAL, new Stats(100, 20, 20, 20));
+        user = new Fighter("Mira", Element.WATER, new Stats(100, 20, 20, 20), ABILITIES);
+        target = new Fighter("Toren", Element.NEUTRAL, new Stats(100, 20, 20, 20), ABILITIES);
     }
 
     @Test

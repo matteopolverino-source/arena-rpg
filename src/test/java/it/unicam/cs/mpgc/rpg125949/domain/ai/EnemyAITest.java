@@ -29,6 +29,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 class EnemyAITest {
 
+    /** Repertorio minimo: un combattente deve conoscere almeno un'abilita'. */
+    private static final List<Ability> ABILITIES =
+            List.of(new HealAbility("Riposo", Element.NEUTRAL, 1));
+
     private DamageCalculator calculator;
     private Fighter enemy;
     private Fighter hero;
@@ -39,8 +43,8 @@ class EnemyAITest {
     @BeforeEach
     void setUp() {
         calculator = new StandardDamageCalculator(new StandardEffectivenessChart());
-        enemy = new Fighter("Nemico", Element.FIRE, new Stats(100, 40, 20, 30));
-        hero = new Fighter("Eroe", Element.NATURE, new Stats(100, 40, 20, 30));
+        enemy = new Fighter("Nemico", Element.FIRE, new Stats(100, 40, 20, 30), ABILITIES);
+        hero = new Fighter("Eroe", Element.NATURE, new Stats(100, 40, 20, 30), ABILITIES);
         weakAttack = new DamageAbility("Colpo lieve", Element.NEUTRAL, 10, calculator);
         strongAttack = new DamageAbility("Colpo pesante", Element.NEUTRAL, 90, calculator);
         heal = new HealAbility("Ristoro", Element.WATER, 40);
@@ -153,8 +157,8 @@ class EnemyAITest {
     @Test
     void choosingDoesNotAlterTheFighters() {
         for (EnemyAI strategy : allStrategies()) {
-            Fighter untouchedEnemy = new Fighter("Nemico", Element.FIRE, new Stats(100, 40, 20, 30));
-            Fighter untouchedHero = new Fighter("Eroe", Element.NATURE, new Stats(100, 40, 20, 30));
+            Fighter untouchedEnemy = new Fighter("Nemico", Element.FIRE, new Stats(100, 40, 20, 30), ABILITIES);
+            Fighter untouchedHero = new Fighter("Eroe", Element.NATURE, new Stats(100, 40, 20, 30), ABILITIES);
 
             strategy.chooseAbility(untouchedEnemy, untouchedHero, List.of(weakAttack, strongAttack, heal));
 

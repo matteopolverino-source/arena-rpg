@@ -17,6 +17,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class BattleTest {
 
+    /** Repertorio minimo: un combattente deve conoscere almeno un'abilita'. */
+    private static final List<Ability> ABILITIES =
+            List.of(new HealAbility("Riposo", Element.NEUTRAL, 1));
+
     private DamageCalculator calculator;
     private TurnOrder turnOrder;
 
@@ -27,7 +31,7 @@ class BattleTest {
     }
 
     private Fighter fighter(String name, int maxHp, int attack, int defense, int speed) {
-        return new Fighter(name, Element.NEUTRAL, new Stats(maxHp, attack, defense, speed));
+        return new Fighter(name, Element.NEUTRAL, new Stats(maxHp, attack, defense, speed), ABILITIES);
     }
 
     private Ability attack(int power) {
