@@ -180,6 +180,38 @@ class TournamentTest {
         );
     }
 
+    /**
+     * Riprendere una partita salvata significa ricominciare da una tappa
+     * intermedia conservando la numerazione originale, altrimenti il
+     * giocatore vedrebbe azzerarsi il proprio avanzamento.
+     */
+    @Test
+    void canBeResumedFromALaterStage() {
+        Tournament tournament = new Tournament(new Team(List.of(champion("Eroe"))),
+                List.of(stage("Ottavi", weakling("A")), stage("Semifinale", weakling("B")),
+                        stage("Finale", weakling("C"))),
+                turnOrder, 2);
+
+        assertAll(
+                () -> assertEquals(3, tournament.getCurrentStageNumber()),
+                () -> assertEquals(3, tournament.getTotalStages()),
+                () -> assertEquals("Finale", tournament.getCurrentStage().name())
+        );
+    }
+
+    @Test
+    void rejectsAStartingStageOutsideTheTournament() {
+        Team playerTeam = new Team(List.of(champion("Eroe")));
+        List<TournamentStage> stages = List.of(stage("Finale", weakling("Campione")));
+
+        assertAll(
+                () -> assertThrows(IllegalArgumentException.class,
+                        () -> new Tournament(playerTeam, stages, turnOrder, -1)),
+                () -> assertThrows(IllegalArgumentException.class,
+                        () -> new Tournament(playerTeam, stages, turnOrder, stages.size()))
+        );
+    }
+
     @Test
     void rejectsAnInvalidConstruction() {
         Team playerTeam = new Team(List.of(champion("Eroe")));

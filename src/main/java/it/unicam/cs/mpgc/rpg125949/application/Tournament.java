@@ -40,13 +40,40 @@ public class Tournament {
      * @throws IllegalArgumentException se non viene indicata alcuna tappa
      */
     public Tournament(Team playerTeam, List<TournamentStage> stages, TurnOrder turnOrder) {
+        this(playerTeam, stages, turnOrder, 0);
+    }
+
+    /**
+     * Riprende un torneo a partire da una tappa gia' raggiunta.
+     * <p>
+     * Le tappe precedenti restano nell'elenco anche se non verranno giocate:
+     * servono a conservare la numerazione originale, cosi' che riprendendo una
+     * partita il giocatore ritrovi l'avanzamento che aveva e non un torneo
+     * apparentemente piu' corto.
+     *
+     * @param playerTeam        squadra del giocatore; non nulla
+     * @param stages            elenco completo delle tappe; non nullo e non vuoto
+     * @param turnOrder         criterio di ordinamento dei turni; non nullo
+     * @param startingStageIndex tappa da cui ripartire, contata da zero
+     * @throws NullPointerException     se un argomento e' nullo
+     * @throws IllegalArgumentException se non viene indicata alcuna tappa o se
+     *                                  la tappa di partenza non esiste
+     */
+    public Tournament(Team playerTeam, List<TournamentStage> stages, TurnOrder turnOrder,
+                      int startingStageIndex) {
         this.playerTeam = Objects.requireNonNull(playerTeam, "playerTeam non puo' essere null");
         Objects.requireNonNull(stages, "stages non puo' essere null");
         if (stages.isEmpty()) {
             throw new IllegalArgumentException("un torneo deve avere almeno una tappa");
         }
+        if (startingStageIndex < 0 || startingStageIndex >= stages.size()) {
+            throw new IllegalArgumentException(
+                    "la tappa di partenza deve essere compresa fra 0 e " + (stages.size() - 1)
+                            + ", ricevuta: " + startingStageIndex);
+        }
         this.stages = List.copyOf(stages);
         this.turnOrder = Objects.requireNonNull(turnOrder, "turnOrder non puo' essere null");
+        this.stageIndex = startingStageIndex;
     }
 
     public Team getPlayerTeam() {
