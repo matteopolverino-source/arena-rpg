@@ -126,6 +126,25 @@ public class GameService {
     }
 
     /**
+     * Manda in campo un altro membro della squadra del giocatore.
+     * <p>
+     * Passa dal servizio e non direttamente dalla squadra perche' l'interfaccia
+     * grafica non deve manipolare gli oggetti di dominio: si limita a
+     * dichiarare l'intenzione del giocatore.
+     *
+     * @param fighter combattente da schierare, appartenente alla squadra e non
+     *                sconfitto
+     * @throws NullPointerException     se {@code fighter} e' nullo
+     * @throws IllegalStateException    se nessuna partita e' in corso
+     * @throws IllegalArgumentException se il combattente non appartiene alla
+     *                                  squadra o e' stato sconfitto
+     */
+    public void switchActiveFighter(Fighter fighter) {
+        Objects.requireNonNull(fighter, "fighter non puo' essere null");
+        getTournament().getPlayerTeam().switchTo(fighter);
+    }
+
+    /**
      * Conserva l'avanzamento della partita in corso.
      *
      * @throws IllegalStateException se nessuna partita e' in corso

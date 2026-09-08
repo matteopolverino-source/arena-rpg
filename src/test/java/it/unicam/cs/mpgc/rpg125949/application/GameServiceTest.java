@@ -17,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -115,6 +116,29 @@ class GameServiceTest {
 
         assertTrue(tournament.getCurrentStageNumber() > 1 || tournament.isOver(),
                 "la prima tappa doveva concludersi");
+    }
+
+    @Test
+    void putsAnotherCompanionInTheField() {
+        Tournament tournament = service.startNewGame();
+        Fighter reserve = tournament.getPlayerTeam().getFighters().get(1);
+
+        service.switchActiveFighter(reserve);
+
+        assertSame(reserve, tournament.getCurrentBattle().getPlayerTeam().getActiveFighter());
+    }
+
+    @Test
+    void refusesToFieldSomeoneOutsideTheTeam() {
+        service.startNewGame();
+        Fighter stranger = new DefaultGameContent().createPlayerTeam().getFighters().get(0);
+
+        assertAll(
+                () -> assertThrows(IllegalArgumentException.class,
+                        () -> service.switchActiveFighter(stranger)),
+                () -> assertThrows(NullPointerException.class,
+                        () -> service.switchActiveFighter(null))
+        );
     }
 
     @Test
