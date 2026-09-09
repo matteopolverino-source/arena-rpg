@@ -1,0 +1,147 @@
+/* Foglio di stile dell'interfaccia di Arena.
+   Tenere l'aspetto qui invece che nel codice permette di cambiare l'immagine
+   del gioco senza ricompilare, e mantiene le classi delle schermate occupate
+   soltanto della struttura. */
+
+.root {
+    -fx-font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    -fx-font-size: 13px;
+}
+
+.screen {
+    -fx-background-color: linear-gradient(to bottom, #1d2330, #11151d);
+}
+
+.game-title {
+    -fx-font-size: 62px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #f2c14e;
+}
+
+.game-subtitle {
+    -fx-font-size: 15px;
+    -fx-text-fill: #b8c0cc;
+}
+
+.feedback-text {
+    -fx-text-fill: #e0857b;
+}
+
+.outcome-win {
+    -fx-text-fill: #6ec07a;
+}
+
+.outcome-loss {
+    -fx-text-fill: #d4695f;
+}
+
+.stage-name {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #f2f4f8;
+}
+
+.stage-progress {
+    -fx-text-fill: #8d97a6;
+}
+
+.section-title {
+    -fx-text-fill: #8d97a6;
+    -fx-font-size: 11px;
+}
+
+.fighter-panel {
+    -fx-background-color: #232b3a;
+    -fx-background-radius: 8;
+    -fx-border-color: #313c4f;
+    -fx-border-radius: 8;
+}
+
+.panel-heading {
+    -fx-text-fill: #8d97a6;
+    -fx-font-size: 11px;
+}
+
+.fighter-name {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #f2f4f8;
+}
+
+.health-text {
+    -fx-text-fill: #b8c0cc;
+}
+
+.progress-bar > .track {
+    -fx-background-color: #161b25;
+    -fx-background-radius: 4;
+}
+
+.health-healthy > .bar {
+    -fx-background-color: #5fa86b;
+    -fx-background-radius: 4;
+}
+
+.health-wounded > .bar {
+    -fx-background-color: #d2a044;
+    -fx-background-radius: 4;
+}
+
+.health-critical > .bar {
+    -fx-background-color: #c4564c;
+    -fx-background-radius: 4;
+}
+
+.button {
+    -fx-background-color: #2f3a4d;
+    -fx-text-fill: #e8ecf2;
+    -fx-background-radius: 6;
+    -fx-padding: 8 16 8 16;
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: #3b4a62;
+}
+
+.button:disabled {
+    -fx-opacity: 0.4;
+}
+
+.primary-button {
+    -fx-background-color: #c9a227;
+    -fx-text-fill: #1d2330;
+    -fx-font-weight: bold;
+    -fx-font-size: 15px;
+    -fx-padding: 10 26 10 26;
+}
+
+.primary-button:hover {
+    -fx-background-color: #dbb32f;
+}
+
+.ability-button {
+    -fx-background-color: #3a4c66;
+}
+
+.ability-button:hover {
+    -fx-background-color: #48607f;
+}
+
+.list-view {
+    -fx-background-color: #161b25;
+    -fx-background-radius: 6;
+    -fx-border-color: #313c4f;
+    -fx-border-radius: 6;
+}
+
+.list-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: #c6cedb;
+    -fx-padding: 3 10 3 10;
+}
+
+.list-cell:filled:selected {
+    -fx-background-color: transparent;
+    -fx-text-fill: #c6cedb;
+}
