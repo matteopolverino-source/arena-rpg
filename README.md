@@ -72,12 +72,16 @@ Nella realizzazione di questo progetto e' stato utilizzato **Claude
 
 - discussione e definizione dell'architettura del progetto e della suddivisione
   in package;
+- generazione del codice sorgente e dei test automatici, seguendo un ciclo
+  test-driven e le scelte progettuali approvate volta per volta;
 - supporto nella diagnosi di problemi di configurazione dell'ambiente di
   sviluppo (build Gradle, dipendenze, esecuzione);
 - stesura della documentazione.
 
-Le decisioni progettuali sono state discusse e approvate dallo studente, che ha
-verificato il funzionamento del codice tramite build e test automatici.
+La scelta del tipo di gioco, l'approvazione di ogni scelta progettuale, il
+collaudo dell'applicazione e la gestione del repository sono state svolte dallo
+studente, che ha verificato il funzionamento del codice tramite build e test
+automatici.
 
 Una descrizione **dettagliata e suddivisa per fase di sviluppo** dell'uso di
 strumenti di AI, con l'indicazione dello scopo di ogni utilizzo, e' riportata
