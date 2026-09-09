@@ -1,52 +1,80 @@
 package it.unicam.cs.mpgc.rpg125949.ui;
 
+import it.unicam.cs.mpgc.rpg125949.application.DefaultGameContent;
+import it.unicam.cs.mpgc.rpg125949.application.GameService;
+import it.unicam.cs.mpgc.rpg125949.application.port.GameRepository;
+import it.unicam.cs.mpgc.rpg125949.domain.combat.SpeedTurnOrder;
+import it.unicam.cs.mpgc.rpg125949.persistence.JsonGameRepository;
 import javafx.application.Application;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
+import java.nio.file.Path;
 
 /**
  * Applicazione JavaFX che ospita l'interfaccia grafica di Arena.
  * <p>
- * Responsabilita': creare la finestra principale e mostrare la schermata
- * iniziale. Non contiene logica di gioco: quest'ultima risiede nei package
- * {@code domain} e {@code application}, che non dipendono da JavaFX.
+ * Ha due sole responsabilita': comporre le parti del gioco all'avvio e
+ * mostrare una schermata alla volta. E' l'unico punto in cui si decide quali
+ * implementazioni usare - i contenuti predefiniti, il salvataggio su file
+ * JSON, l'ordine di turno per velocita' - e per questo l'unico da modificare
+ * per cambiarle: nessuna delle classi sottostanti le nomina.
+ * <p>
+ * Nessuna regola di gioco vive in questo package: le schermate interrogano il
+ * {@link GameService} e ne mostrano il risultato.
  */
-public class ArenaApplication extends Application {
+public class ArenaApplication extends Application implements ScreenNavigator {
 
     private static final String WINDOW_TITLE = "Arena";
     private static final double WINDOW_WIDTH = 900;
-    private static final double WINDOW_HEIGHT = 600;
+    private static final double WINDOW_HEIGHT = 680;
+
+    /** Il salvataggio vive nella cartella personale, non in quella del programma. */
+    private static final Path SAVE_FILE =
+            Path.of(System.getProperty("user.home"), ".arena-rpg", "partita.json");
+
+    private GameService service;
+    private Scene scene;
 
     @Override
     public void start(Stage stage) {
+        GameRepository repository = new JsonGameRepository(SAVE_FILE);
+        this.service = new GameService(new DefaultGameContent(), repository, new SpeedTurnOrder());
+
+        this.scene = new Scene(new TitleView(service, this).build(), WINDOW_WIDTH, WINDOW_HEIGHT);
+        applyStylesheet(scene);
+
         stage.setTitle(WINDOW_TITLE);
-        stage.setScene(new Scene(createTitleScreen(), WINDOW_WIDTH, WINDOW_HEIGHT));
+        stage.setScene(scene);
+        stage.setMinWidth(760);
+        stage.setMinHeight(600);
         stage.show();
     }
 
-    /**
-     * Costruisce la schermata iniziale.
-     *
-     * @return il nodo radice della schermata iniziale
-     */
-    private VBox createTitleScreen() {
-        Label title = new Label("ARENA");
-        title.setStyle("-fx-font-size: 64px; -fx-font-weight: bold;");
+    @Override
+    public void showTitleScreen() {
+        show(new TitleView(service, this).build());
+    }
 
-        Label subtitle = new Label("Combattimenti a squadre, a turni");
-        subtitle.setStyle("-fx-font-size: 16px;");
+    @Override
+    public void showBattleScreen() {
+        show(new BattleView(service, this).build());
+    }
 
-        Button newGame = new Button("Nuova partita");
-        newGame.setDisable(true);
+    @Override
+    public void showOutcomeScreen() {
+        show(new OutcomeView(service, this).build());
+    }
 
-        VBox root = new VBox(16, title, subtitle, newGame);
-        root.setAlignment(Pos.CENTER);
-        root.setPadding(new Insets(40));
-        return root;
+    private void show(Parent screen) {
+        scene.setRoot(screen);
+    }
+
+    private static void applyStylesheet(Scene target) {
+        var stylesheet = ArenaApplication.class.getResource("/arena.css");
+        if (stylesheet != null) {
+            target.getStylesheets().add(stylesheet.toExternalForm());
+        }
     }
 }
